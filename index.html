@@ -1,102 +1,69 @@
-// script.js
-document.addEventListener("DOMContentLoaded", () => {
-  const playlistEl = document.getElementById("playlist");
-  const localSongsEl = document.getElementById("local-songs");
-  const playBtn = document.getElementById("play");
-  const pauseBtn = document.getElementById("pause");
-  const stopBtn = document.getElementById("stop");
-  const nextBtn = document.getElementById("next");
-  const prevBtn = document.getElementById("prev");
-  const slowBtn = document.getElementById("slow");
-  const normalBtn = document.getElementById("normal");
-  const fastBtn = document.getElementById("fast");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AudioVerse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>AudioVerse</h1>
+      <button id="theme-toggle">Switch Theme</button>
+    </header>
 
-  let audio = new Audio();
-  let playlistSongs = [];
-  let localSongs = [];
-  let currentIndex = 0;
+    <main>
+      <!-- Playlist Section -->
+      <section class="playlist">
+        <h2>Your Playlist</h2>
+        <ul id="playlist">
+          <li data-src="assets/songs/song1.mp3">Song 1</li>
+          <li data-src="assets/songs/song2.mp3">Song 2</li>
+          <li data-src="assets/songs/song3.mp3">Song 3</li>
+        </ul>
+      </section>
 
-  // Mock songs for testing
-  const loadSongs = () => {
-    const formats = ["mp3", "wav", "ogg"];
-    playlistSongs = ["song1.mp3", "song2.wav", "song3.ogg"];
-    localSongs = ["local1.mp3", "local2.wav", "local3.ogg"];
+      <!-- Player Controls -->
+      <section class="player-controls">
+        <audio id="audio-player" controls></audio>
+        <div>
+          <button id="prev-btn">Previous</button>
+          <button id="play-btn">Play</button>
+          <button id="pause-btn">Pause</button>
+          <button id="next-btn">Next</button>
+        </div>
+        <div class="extra-controls">
+          <label for="speed">Speed:</label>
+          <select id="speed">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+          </select>
+        </div>
+      </section>
 
-    playlistSongs.forEach((song, index) => {
-      const li = document.createElement("li");
-      li.textContent = song;
-      li.addEventListener("click", () => playSong(index));
-      playlistEl.appendChild(li);
-    });
+      <!-- Lyrics Section -->
+      <section class="lyrics">
+        <h2>Lyrics</h2>
+        <pre id="lyrics-display">Select a song to view lyrics.</pre>
+      </section>
 
-    localSongs.forEach(song => {
-      const li = document.createElement("li");
-      li.textContent = song;
-      localSongsEl.appendChild(li);
-    });
-  };
+      <!-- Equalizer Section -->
+      <section class="equalizer">
+        <h2>Equalizer</h2>
+        <div id="equalizer-controls">
+          <label>Bass: <input type="range" id="bass" min="-10" max="10" value="0"></label>
+          <label>Treble: <input type="range" id="treble" min="-10" max="10" value="0"></label>
+        </div>
+      </section>
+    </main>
 
-  // Play selected song
-  const playSong = (index) => {
-    currentIndex = index;
-    audio.src = playlistSongs[index];
-    audio.play();
-    updatePlayPauseButton();
-  };
+    <footer>
+      <p>&copy; 2024 AudioVerse. All rights reserved.</p>
+    </footer>
+  </div>
 
-  // Button functionalities
-  playBtn.addEventListener("click", () => {
-    if (!audio.src && playlistSongs.length > 0) {
-      playSong(currentIndex);
-    } else {
-      audio.play();
-    }
-    updatePlayPauseButton();
-  });
-
-  pauseBtn.addEventListener("click", () => {
-    audio.pause();
-    updatePlayPauseButton();
-  });
-
-  stopBtn.addEventListener("click", () => {
-    audio.pause();
-    audio.currentTime = 0;
-    updatePlayPauseButton();
-  });
-
-  nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % playlistSongs.length;
-    playSong(currentIndex);
-  });
-
-  prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + playlistSongs.length) % playlistSongs.length;
-    playSong(currentIndex);
-  });
-
-  slowBtn.addEventListener("click", () => {
-    audio.playbackRate = 0.75;
-  });
-
-  normalBtn.addEventListener("click", () => {
-    audio.playbackRate = 1.0;
-  });
-
-  fastBtn.addEventListener("click", () => {
-    audio.playbackRate = 1.5;
-  });
-
-  // Update play/pause button state
-  const updatePlayPauseButton = () => {
-    playBtn.disabled = !audio.paused;
-    pauseBtn.disabled = audio.paused;
-  };
-
-  // Auto-play next song
-  audio.addEventListener("ended", () => nextBtn.click());
-
-  // Initialize app
-  loadSongs();
-  updatePlayPauseButton();
-});
+  <script src="script.js"></script>
+</body>
+</html>
