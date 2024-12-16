@@ -1,69 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AudioVerse</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioVerse</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-container">
     <header>
-      <h1>AudioVerse</h1>
-      <button id="theme-toggle">Switch Theme</button>
+        <h1>AudioVerse</h1>
+        <button id="themeToggle">Toggle Theme</button>
     </header>
 
     <main>
-      <!-- Playlist Section -->
-      <section class="playlist">
-        <h2>Your Playlist</h2>
-        <ul id="playlist">
-          <li data-src="assets/songs/song1.mp3">Song 1</li>
-          <li data-src="assets/songs/song2.mp3">Song 2</li>
-          <li data-src="assets/songs/song3.mp3">Song 3</li>
-        </ul>
-      </section>
+        <!-- Playlist Section -->
+        <section id="playlistSection">
+            <h2>Playlist</h2>
+            <ul id="playlist"></ul>
+        </section>
 
-      <!-- Player Controls -->
-      <section class="player-controls">
-        <audio id="audio-player" controls></audio>
-        <div>
-          <button id="prev-btn">Previous</button>
-          <button id="play-btn">Play</button>
-          <button id="pause-btn">Pause</button>
-          <button id="next-btn">Next</button>
-        </div>
-        <div class="extra-controls">
-          <label for="speed">Speed:</label>
-          <select id="speed">
-            <option value="0.5">0.5x</option>
-            <option value="1" selected>1x</option>
-            <option value="1.5">1.5x</option>
-          </select>
-        </div>
-      </section>
+        <!-- Controls Section -->
+        <section id="controls">
+            <audio id="audioPlayer" controls></audio>
+            <button onclick="playPrevious()">Previous</button>
+            <button onclick="playNext()">Next</button>
+            <button onclick="adjustPlaybackSpeed(0.5)">Slow</button>
+            <button onclick="adjustPlaybackSpeed(1)">Normal</button>
+            <button onclick="adjustPlaybackSpeed(1.5)">Fast</button>
+        </section>
 
-      <!-- Lyrics Section -->
-      <section class="lyrics">
-        <h2>Lyrics</h2>
-        <pre id="lyrics-display">Select a song to view lyrics.</pre>
-      </section>
-
-      <!-- Equalizer Section -->
-      <section class="equalizer">
-        <h2>Equalizer</h2>
-        <div id="equalizer-controls">
-          <label>Bass: <input type="range" id="bass" min="-10" max="10" value="0"></label>
-          <label>Treble: <input type="range" id="treble" min="-10" max="10" value="0"></label>
-        </div>
-      </section>
+        <!-- Online Downloader Section -->
+        <section id="downloader">
+            <h2>Online Music Downloader</h2>
+            <input type="text" id="downloadUrl" placeholder="Enter music URL">
+            <button onclick="downloadMusic()">Download</button>
+        </section>
     </main>
 
-    <footer>
-      <p>&copy; 2024 AudioVerse. All rights reserved.</p>
-    </footer>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

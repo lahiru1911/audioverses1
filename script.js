@@ -1,54 +1,76 @@
-// Select elements
-const audioPlayer = document.getElementById("audio-player");
-const playlist = document.getElementById("playlist");
-const playBtn = document.getElementById("play-btn");
-const pauseBtn = document.getElementById("pause-btn");
-const nextBtn = document.getElementById("next-btn");
-const prevBtn = document.getElementById("prev-btn");
-const speedControl = document.getElementById("speed");
-const lyricsDisplay = document.getElementById("lyrics-display");
-const themeToggle = document.getElementById("theme-toggle");
+// GLOBAL VARIABLES
+let audioPlayer = document.getElementById('audioPlayer');
+let playlist = [];
+let currentSongIndex = 0;
 
-// Playlist functionality
-playlist.addEventListener("click", (e) => {
-  if (e.target.tagName === "LI") {
-    audioPlayer.src = e.target.dataset.src;
+// THEME TOGGLE
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
+// SCAN LOCAL SONGS (Mock Example)
+function scanSongs() {
+    playlist = [
+        { name: "Song 1", path: "song1.mp3" },
+        { name: "Song 2", path: "song2.mp3" },
+        { name: "Song 3", path: "song3.mp3" }
+    ];
+    populatePlaylist();
+}
+
+// POPULATE PLAYLIST
+function populatePlaylist() {
+    const playlistElement = document.getElementById('playlist');
+    playlistElement.innerHTML = ""; // Clear previous list
+    playlist.forEach((song, index) => {
+        const li = document.createElement('li');
+        li.textContent = song.name;
+        li.onclick = () => playSong(index);
+        playlistElement.appendChild(li);
+    });
+}
+
+// PLAY SELECTED SONG
+function playSong(index) {
+    currentSongIndex = index;
+    audioPlayer.src = playlist[index].path;
     audioPlayer.play();
-    lyricsDisplay.textContent = `Playing lyrics for ${e.target.textContent}`;
-  }
-});
+}
 
-// Play/pause/next/prev functionality
-playBtn.addEventListener("click", () => audioPlayer.play());
-pauseBtn.addEventListener("click", () => audioPlayer.pause());
+// PLAYBACK CONTROLS
+function playNext() {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    playSong(currentSongIndex);
+}
 
-nextBtn.addEventListener("click", () => {
-  const current = playlist.querySelector("li.active");
-  const next = current?.nextElementSibling || playlist.firstElementChild;
-  next.click();
-});
+function playPrevious() {
+    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+    playSong(currentSongIndex);
+}
 
-prevBtn.addEventListener("click", () => {
-  const current = playlist.querySelector("li.active");
-  const prev = current?.previousElementSibling || playlist.lastElementChild;
-  prev.click();
-});
+// ADJUST PLAYBACK SPEED
+function adjustPlaybackSpeed(speed) {
+    audioPlayer.playbackRate = speed;
+}
 
-// Speed control
-speedControl.addEventListener("change", (e) => {
-  audioPlayer.playbackRate = e.target.value;
-});
+// ONLINE MUSIC DOWNLOADER
+function downloadMusic() {
+    const url = document.getElementById('downloadUrl').value;
+    if (!url) {
+        alert("Please enter a valid URL!");
+        return;
+    }
 
-// Theme toggle
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark-theme");
-});
+    // Simulating a download link
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "downloaded_music.mp3";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    alert("Download initiated!");
+}
 
-// Equalizer (placeholder functionality)
-document.getElementById("bass").addEventListener("input", (e) => {
-  console.log("Bass adjusted to", e.target.value);
-});
-
-document.getElementById("treble").addEventListener("input", (e) => {
-  console.log("Treble adjusted to", e.target.value);
-});
+// INITIATE SCAN ON LOAD
+scanSongs();
